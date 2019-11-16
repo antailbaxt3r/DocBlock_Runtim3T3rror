@@ -202,7 +202,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:text="@string/date_of_birth"
+                            android:text="@string/designation"
                             android:textColor="@color/black"
                             android:layout_weight="1"
                             />
@@ -212,8 +212,8 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/date_of_birth_register"
-                            android:hint="@string/mm_dd_yyyy"/>
+                            android:id="@+id/designation"
+                            android:hint="@string/designation"/>
 
                     </LinearLayout>
 

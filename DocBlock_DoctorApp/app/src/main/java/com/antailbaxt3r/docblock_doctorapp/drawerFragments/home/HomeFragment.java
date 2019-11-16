@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.antailbaxt3r.docblock_doctorapp.R;
+import com.antailbaxt3r.docblock_doctorapp.adapters.QueryAdapter;
 import com.antailbaxt3r.docblock_doctorapp.adapters.RecentsRVAdapter;
 import com.antailbaxt3r.docblock_doctorapp.drawerFragments.searchDocs.SearchDocsFragment;
 import com.antailbaxt3r.docblock_doctorapp.models.Doctor;
+import com.antailbaxt3r.docblock_doctorapp.models.QueryModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,10 +34,10 @@ public class HomeFragment extends Fragment {
     private LinearLayout noRecents;
 
     private RecyclerView recyclerView;
-    private RecentsRVAdapter adapter;
+    private QueryAdapter adapter;
     private CardView searchButton;
-    private ArrayList<Doctor> docList = new ArrayList<>();
-    private DatabaseReference docRef = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("recent");
+    private ArrayList<QueryModel> qList = new ArrayList<>();
+    private DatabaseReference docRef = FirebaseDatabase.getInstance().getReference().child("allDoctors").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,18 +48,10 @@ public class HomeFragment extends Fragment {
         noRecents = root.findViewById(R.id.no_recents);
         recyclerView = root.findViewById(R.id.recents_rv);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction()
-                        .replace(((ViewGroup) getView().getParent()).getId(), new SearchDocsFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
 
 
-        docRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        docRef.child("queries").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -65,20 +59,25 @@ public class HomeFragment extends Fragment {
                     noRecents.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }else{
-                    docList.clear();
+                    qList.clear();
                     for (DataSnapshot shot : dataSnapshot.getChildren()){
-                        Doctor doc = shot.getValue(Doctor.class);
-                        docList.add(doc);
+
+                        String problem = shot.child("problem").getValue().toString();
+                        String duration = shot.child("duration").getValue().toString();
+                        String name = shot.child("sender").child("username").getValue().toString();
+                        String UID = shot.child("sender").child("UID").getValue().toString();
+
+                        QueryModel q = new QueryModel(problem, duration, UID, name);
+                        qList.add(q);
                     }
 
                     recyclerView.setVisibility(View.VISIBLE);
                     noRecents.setVisibility(View.GONE);
 
-                    adapter = new RecentsRVAdapter(docList, getContext());
+                    adapter = new QueryAdapter(qList);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
-
 
             }
 
@@ -87,10 +86,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
-
-
 
         return root;
 

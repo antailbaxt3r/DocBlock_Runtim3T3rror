@@ -14,18 +14,7 @@
     <fragment
         android:id="@+id/nav_your_docs"
         android:name="com.antailbaxt3r.docblock_doctorapp.drawerFragments.yourDocs.YourDocsFragment"
-        android:label="@string/your_doctors"
+        android:label="@string/your_patients"
         tools:layout="@layout/fragment_yourdocs" />
 
-    <fragment
-        android:id="@+id/Nav_search_docs"
-        android:name="com.antailbaxt3r.docblock_doctorapp.drawerFragments.searchDocs.SearchDocsFragment"
-        android:label="@string/search_for_doctors"
-        tools:layout="@layout/fragment_search_docs" />
-
-    <fragment
-        android:id="@+id/nav_prev_prescips"
-        android:name="com.antailbaxt3r.docblock_doctorapp.drawerFragments.prevPres.PrevPresFragment"
-        android:label="@string/your_prescriptions"
-        tools:layout="@layout/fragmentprev_pres" />
 </navigation>

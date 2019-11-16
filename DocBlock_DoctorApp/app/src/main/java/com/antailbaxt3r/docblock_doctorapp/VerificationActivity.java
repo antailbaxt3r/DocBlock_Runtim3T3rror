@@ -33,6 +33,7 @@ public class VerificationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String regNumber = reg.getText().toString();
+
             }
         });
 

@@ -34,7 +34,7 @@ import java.util.Locale;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText password, confirmPassword;
-    private EditText name, email, contact, dateOfBirth;
+    private EditText name, email, contact, designation;
     private LinearLayout registerButton, alreadyRegistered;
     private String nameText, passwordText, emailText, confirmPasswordText, contactText, dobText;
     private LinearLayout progressBar;
@@ -57,40 +57,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name_register);
         email = findViewById(R.id.email_register);
-        dateOfBirth = findViewById(R.id.date_of_birth_register);
         contact = findViewById(R.id.contact_register);
         password = findViewById(R.id.password_register);
         confirmPassword = findViewById(R.id.confirm_password_register);
         registerButton = findViewById(R.id.register_button);
         alreadyRegistered = findViewById(R.id.alreadyRegistered);
         progressBar = findViewById(R.id.progress_bar);
-
-        dateOfBirth.setFocusable(false);
-        dateOfBirth.setClickable(true);
-
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-
-        };
-
-        dateOfBirth.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(RegisterActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-
+        designation = findViewById(R.id.designation);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -106,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                 passwordText = password.getText().toString();
                 confirmPasswordText = confirmPassword.getText().toString();
                 contactText = contact.getText().toString();
-                dobText = dateOfBirth.getText().toString();
+                dobText = designation.getText().toString();
 
                 if(!(nameText.isEmpty()) && !(emailText.isEmpty()) && !(contactText.isEmpty()) &&  !(passwordText.isEmpty()) && !(confirmPasswordText.isEmpty()) && !(dobText.isEmpty())){
                     if(passwordText.equals(confirmPasswordText)){
@@ -174,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userReference.child("allDoctors").child(user.getUid()).child("username").setValue(nameText);
                             userReference.child("allDoctors").child(user.getUid()).child("contactNumber").setValue(contactText);
                             userReference.child("allDoctors").child(user.getUid()).child("UID").setValue(user.getUid());
-                            userReference.child("allDoctors").child(user.getUid()).child("dob").setValue(dobText);
+                            userReference.child("allDoctors").child(user.getUid()).child("designation").setValue(dobText);
 
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -183,10 +156,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     privatek = privatek.replace("OpenSSLRSAPublicKey{modulus=", "");
                                     privatek = privatek.replace(",publicExponent=10001}","");
                                     String publick = dataSnapshot.child("allDoctors").child(user.getUid()).child("publicKey").getValue().toString();
-                                    publick = publick.replace("OpenSSLRSAPublicCrtKey{modulus=", "");
+                                    publick = publick.replace("OpenSSLRSAPublicKey{modulus=", "");
                                     publick = publick.replace(",publicExponent=10001}","");
-                                    userReference.child("Users").child(user.getUid()).child("publicKey").setValue(publick);
-                                    userReference.child("Users").child(user.getUid()).child("privateKey").setValue(privatek);
+                                    userReference.child("allDoctors").child(user.getUid()).child("publicKey").setValue(publick);
+                                    userReference.child("allDoctors").child(user.getUid()).child("privateKey").setValue(privatek);
 
                                 }
 
@@ -217,10 +190,4 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void updateLabel(){
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        dateOfBirth.setText(sdf.format(myCalendar.getTime()));
-    }
 }
