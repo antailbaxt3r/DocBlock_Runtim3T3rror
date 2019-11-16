@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.antailbaxt3r.docblock_doctorapp.api.RSA;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.KeyPair;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -161,14 +163,31 @@ public class RegisterActivity extends AppCompatActivity {
 
                             System.out.println("USER is : " + user);
                             System.out.println("UID is: " + user.getUid());
+                            try {
+                                KeyPair pair = RSA.generateKeyPair();
+                                userReference.child("Users").child(user.getUid()).child("publicKey").setValue(pair.getPublic().toString());
+                                System.out.println(pair.getPublic().toString());
+                                userReference.child("Users").child(user.getUid()).child("privateKey").setValue(pair.getPrivate().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            userReference.child("allDoctors").child(user.getUid()).child("username").setValue(nameText);
+                            userReference.child("allDoctors").child(user.getUid()).child("contactNumber").setValue(contactText);
+                            userReference.child("allDoctors").child(user.getUid()).child("UID").setValue(user.getUid());
+                            userReference.child("allDoctors").child(user.getUid()).child("dob").setValue(dobText);
 
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    userReference.child("Users").child(user.getUid()).child("username").setValue(nameText);
-                                    userReference.child("Users").child(user.getUid()).child("contactNumber").setValue(contactText);
-                                    userReference.child("Users").child(user.getUid()).child("UID").setValue(user.getUid());
-                                    userReference.child("Users").child(user.getUid()).child("dob").setValue(dobText);
+                                    String privatek = dataSnapshot.child("allDoctors").child(user.getUid()).child("privateKey").getValue().toString();
+                                    privatek = privatek.replace("OpenSSLRSAPublicKey{modulus=", "");
+                                    privatek = privatek.replace(",publicExponent=10001}","");
+                                    String publick = dataSnapshot.child("allDoctors").child(user.getUid()).child("publicKey").getValue().toString();
+                                    publick = publick.replace("OpenSSLRSAPublicCrtKey{modulus=", "");
+                                    publick = publick.replace(",publicExponent=10001}","");
+                                    userReference.child("Users").child(user.getUid()).child("publicKey").setValue(publick);
+                                    userReference.child("Users").child(user.getUid()).child("privateKey").setValue(privatek);
+
                                 }
 
                                 @Override

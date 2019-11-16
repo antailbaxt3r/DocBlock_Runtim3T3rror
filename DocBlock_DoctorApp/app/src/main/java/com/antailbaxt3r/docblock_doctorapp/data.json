@@ -1,0 +1,12 @@
+{
+  "doc1" : {
+    "username" : "doc1",
+    "id" : "id1",
+    "dob" : "dob1"
+  },
+  "doc2" : {
+    "username" : "doc2",
+    "id" : "id2",
+    "dob" : "dob2"
+  }
+}
