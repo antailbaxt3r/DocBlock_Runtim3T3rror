@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">DocBlock_PatientApp</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up!</string>
+    <string name="patient_name">Patient Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account_log_in">Already have an account? Log in</string>
+    <string name="date_of_birth">Date Of Birth</string>
+    <string name="dd_mm_yyyy">DD-MM-YYYY</string>
+    <string name="loading">Loading</string>
+    <string name="mm_dd_yyyy">MM-DD-YYYY</string>
 </resources>
