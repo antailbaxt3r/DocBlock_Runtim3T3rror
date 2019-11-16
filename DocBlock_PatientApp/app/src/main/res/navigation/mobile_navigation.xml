@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.antailbaxt3r.docblock_patientapp.drawerFragments.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_your_docs"
+        android:name="com.antailbaxt3r.docblock_patientapp.drawerFragments.yourDocs.YourDocsFragment"
+        android:label="@string/your_doctors"
+        tools:layout="@layout/fragment_yourdocs" />
+
+    <fragment
+        android:id="@+id/Nav_search_docs"
+        android:name="com.antailbaxt3r.docblock_patientapp.drawerFragments.searchDocs.SearchDocsFragment"
+        android:label="@string/search_for_doctors"
+        tools:layout="@layout/fragment_search_docs" />
+
+    <fragment
+        android:id="@+id/nav_prev_prescips"
+        android:name="com.antailbaxt3r.docblock_patientapp.drawerFragments.prevPres.PrevPresFragment"
+        android:label="@string/menu_tools"
+        tools:layout="@layout/fragmentprev_pres" />
+</navigation>

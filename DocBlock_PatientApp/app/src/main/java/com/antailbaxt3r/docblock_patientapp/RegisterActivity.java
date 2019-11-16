@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText password, confirmPassword;
     private EditText name, email, contact, dateOfBirth;
     private LinearLayout registerButton, alreadyRegistered;
-    private String nameText, passwordText, emailText, confirmPasswordText, contactText;
+    private String nameText, passwordText, emailText, confirmPasswordText, contactText, dobText;
     private LinearLayout progressBar;
 
     private FirebaseAuth firebaseAuth;
@@ -104,8 +104,9 @@ public class RegisterActivity extends AppCompatActivity {
                 passwordText = password.getText().toString();
                 confirmPasswordText = confirmPassword.getText().toString();
                 contactText = contact.getText().toString();
+                dobText = dateOfBirth.getText().toString();
 
-                if(!(nameText.isEmpty()) && !(emailText.isEmpty()) && !(contactText.isEmpty()) &&  !(passwordText.isEmpty()) && !(confirmPasswordText.isEmpty())){
+                if(!(nameText.isEmpty()) && !(emailText.isEmpty()) && !(contactText.isEmpty()) &&  !(passwordText.isEmpty()) && !(confirmPasswordText.isEmpty()) && !(dobText.isEmpty())){
                     if(passwordText.equals(confirmPasswordText)){
                         registerUser();
 
@@ -157,6 +158,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             final FirebaseUser user = firebaseAuth.getCurrentUser();
 
+
                             System.out.println("USER is : " + user);
                             System.out.println("UID is: " + user.getUid());
 
@@ -166,6 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     userReference.child("Users").child(user.getUid()).child("username").setValue(nameText);
                                     userReference.child("Users").child(user.getUid()).child("contactNumber").setValue(contactText);
                                     userReference.child("Users").child(user.getUid()).child("UID").setValue(user.getUid());
+                                    userReference.child("Users").child(user.getUid()).child("dob").setValue(dobText);
                                 }
 
                                 @Override
