@@ -1,4 +1,4 @@
-package com.antailbaxt3r.docblock_patientapp.api;
+package com.antailbaxt3r.docblock_doctorapp.api;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;

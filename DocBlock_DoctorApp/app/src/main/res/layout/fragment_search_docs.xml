@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:defaultQueryHint="@string/search_for_doctors"
+                app:queryHint="@string/search_for_doctors"
+                android:layout_margin="10dp"
+                android:layout_gravity="end"
+                android:iconifiedByDefault="false"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:id="@+id/allDocs_rv"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:id="@+id/search_fab"
+            android:src="@drawable/ic_search_24px"
+            android:backgroundTint="@color/yellow700"
+            android:tint="@color/white"
+            android:layout_margin="20dp"/>
+
+    </FrameLayout>
+
+</LinearLayout>
