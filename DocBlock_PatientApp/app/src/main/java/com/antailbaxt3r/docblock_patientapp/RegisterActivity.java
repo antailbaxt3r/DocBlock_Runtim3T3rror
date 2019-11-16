@@ -183,7 +183,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     privatek = privatek.replace("OpenSSLRSAPublicKey{modulus=", "");
                                     privatek = privatek.replace(",publicExponent=10001}","");
                                     String publick = dataSnapshot.child("Users").child(user.getUid()).child("publicKey").getValue().toString();
-                                    publick = publick.replace("OpenSSLRSAPublicCrtKey{modulus=", "");
+                                    publick = publick.replace("OpenSSLRSAPublicKey{modulus=", "");
                                     publick = publick.replace(",publicExponent=10001}","");
                                     userReference.child("Users").child(user.getUid()).child("publicKey").setValue(publick);
                                     userReference.child("Users").child(user.getUid()).child("privateKey").setValue(privatek);

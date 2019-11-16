@@ -33,13 +33,14 @@ public class RecentsRVAdapter extends RecyclerView.Adapter<RecentsViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecentsViewHolder holder, int position) {
 
-        holder.getDocName().setText(docList.get(position).getName());
+        holder.getDocName().setText(docList.get(position).getUsername());
         holder.getDocDesignation().setText(docList.get(position).getDesignation());
         if (!docList.get(position).getImageURL().isEmpty()) {
             holder.getImage().setImageURI(Uri.parse(docList.get(position).getImageURL()));
         }else{
             holder.getImage().setActualImageResource(R.drawable.avatar);
         }
+        holder.setUID(docList.get(position).getUID());
     }
 
     @Override

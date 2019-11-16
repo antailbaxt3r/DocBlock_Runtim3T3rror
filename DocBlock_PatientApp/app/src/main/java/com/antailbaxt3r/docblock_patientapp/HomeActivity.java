@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,6 +19,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -25,6 +30,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.TextView;
+
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -40,15 +48,63 @@ public class HomeActivity extends AppCompatActivity {
 
         Fresco.initialize(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_your_docs, R.id.Nav_search_docs,
+                R.id.nav_home,
+                //R.id.nav_your_docs,
+                R.id.Nav_search_docs,
                 R.id.nav_prev_prescips)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+
+
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.app_name, R.string.navigation_drawer_close)
+        {
+
+            public void onDrawerClosed(View view)
+            {
+                supportInvalidateOptionsMenu();
+                //drawerOpened = false;
+            }
+
+            @Override
+            public boolean onOptionsItemSelected(MenuItem item) {
+                return super.onOptionsItemSelected(item);
+            }
+
+            public void onDrawerOpened(View drawerView)
+            {
+                final TextView displayNameInDrawer = findViewById(R.id.name_drawer);
+                FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String hiText = "Hi";
+                        displayNameInDrawer.setText(hiText);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                supportInvalidateOptionsMenu();
+
+
+                //drawerOpened = true;
+            }
+        };
+
+        mDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        //noinspection deprecation
+        drawer.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+    }
 
 //        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 //            @Override
@@ -69,7 +125,8 @@ public class HomeActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.antailbaxt3r.docblock_patientapp.R;
 import com.antailbaxt3r.docblock_patientapp.models.Doctor;
-import com.antailbaxt3r.docblock_patientapp.viewholders.RecentsViewHolder;
 import com.antailbaxt3r.docblock_patientapp.viewholders.SearchViewHolder;
 
 import java.util.ArrayList;
@@ -37,13 +36,14 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
 
-        holder.getDocName().setText(docList.get(position).getName());
+        holder.getDocName().setText(docList.get(position).getUsername());
         holder.getDocDesignation().setText(docList.get(position).getDesignation());
         if (!docList.get(position).getImageURL().isEmpty()) {
             holder.getImage().setImageURI(Uri.parse(docList.get(position).getImageURL()));
         }else{
             holder.getImage().setImageResource(R.drawable.avatar);
         }
+        holder.setUID(docList.get(position).getUID());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
                 for(Doctor item : docListFiltered){
 
-                    if(item.getName().toLowerCase().contains(filterPattern) || item.getDesignation().toLowerCase().contains(filterPattern)){
+                    if(item.getUsername().toLowerCase().contains(filterPattern) || item.getDesignation().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }

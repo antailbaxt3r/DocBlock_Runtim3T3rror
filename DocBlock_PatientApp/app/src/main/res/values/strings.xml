@@ -32,4 +32,6 @@
     <string name="search_for_doctors">Search For Doctors</string>
     <string name="your_prescriptions">Your Prescriptions</string>
     <string name="profile">Profile</string>
+    <string name="problems_symptoms">Problems/Symptoms</string>
+    <string name="how_long_have_you_faced_this_problem_for">How long have you faced this problem for?</string>
 </resources>
