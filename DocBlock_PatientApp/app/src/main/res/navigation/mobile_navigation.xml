@@ -26,6 +26,6 @@
     <fragment
         android:id="@+id/nav_prev_prescips"
         android:name="com.antailbaxt3r.docblock_patientapp.drawerFragments.prevPres.PrevPresFragment"
-        android:label="@string/menu_tools"
+        android:label="@string/your_prescriptions"
         tools:layout="@layout/fragmentprev_pres" />
 </navigation>

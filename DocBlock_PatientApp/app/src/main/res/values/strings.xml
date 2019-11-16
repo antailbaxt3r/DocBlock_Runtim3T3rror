@@ -31,4 +31,5 @@
     <string name="your_doctors">Your Doctors</string>
     <string name="search_for_doctors">Search For Doctors</string>
     <string name="your_prescriptions">Your Prescriptions</string>
+    <string name="profile">Profile</string>
 </resources>

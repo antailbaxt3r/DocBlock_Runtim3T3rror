@@ -41,8 +41,6 @@ public class HomeActivity extends AppCompatActivity {
         Fresco.initialize(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_your_docs, R.id.Nav_search_docs,
                 R.id.nav_prev_prescips)
@@ -51,6 +49,26 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch(menuItem.getItemId()){
+
+                    case R.id.nav_settings:
+                        Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+                        startActivity(profileIntent);
+                        break;
+                    case R.id.nav_about_us:
+//                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
+//                        startActivity(aboutIntent);
+                        break;
+
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -62,11 +80,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.action_logout :
-                logout();
-                break;
-
+        if (item.getItemId() == R.id.action_logout) {
+            logout();
         }
         return super.onOptionsItemSelected(item);
     }
