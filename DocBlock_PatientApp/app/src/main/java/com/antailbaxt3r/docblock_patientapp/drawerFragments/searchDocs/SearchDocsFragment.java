@@ -84,6 +84,29 @@ public class SearchDocsFragment extends Fragment {
             @Override
             public boolean onClose() {
                 searchView.setVisibility(View.GONE);
+                docList.clear();
+                docRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            docList.clear();
+                            for (DataSnapshot shot : dataSnapshot.getChildren()){
+                                Doctor doctor = shot.getValue(Doctor.class);
+                                docList.add(doctor);
+                            }
+
+                            adapter = new SearchRVAdapter(docList, getContext());
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 return true;
             }
         });

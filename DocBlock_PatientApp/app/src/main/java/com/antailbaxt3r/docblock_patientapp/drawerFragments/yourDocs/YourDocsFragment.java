@@ -28,12 +28,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+
 public class YourDocsFragment extends Fragment {
 
     private YourDocsViewModel yourDocsViewModel;
     private RecyclerView recyclerView;
     private LinearLayout noDocs;
-    private DatabaseReference docRef = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("yourDoctors");
+    private DatabaseReference docRef = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("yourDocs");
 
     private ArrayList<Doctor> docList = new ArrayList<>();
 
@@ -56,7 +57,6 @@ public class YourDocsFragment extends Fragment {
                     noDocs.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }else {
-
                     for (DataSnapshot shot : dataSnapshot.getChildren()){
                         Doctor doctor = shot.getValue(Doctor.class);
                         docList.add(doctor);

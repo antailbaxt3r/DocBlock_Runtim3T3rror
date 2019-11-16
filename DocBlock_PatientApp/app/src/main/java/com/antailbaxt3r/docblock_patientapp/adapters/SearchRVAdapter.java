@@ -68,7 +68,7 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
                 for(Doctor item : docListFiltered){
 
-                    if(item.getName().toLowerCase().contains(filterPattern)){
+                    if(item.getName().toLowerCase().contains(filterPattern) || item.getDesignation().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
