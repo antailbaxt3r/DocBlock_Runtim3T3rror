@@ -9,14 +9,17 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.antailbaxt3r.docblock_patientapp.HomeActivity;
 import com.antailbaxt3r.docblock_patientapp.R;
 import com.antailbaxt3r.docblock_patientapp.adapters.RecentsRVAdapter;
+import com.antailbaxt3r.docblock_patientapp.drawerFragments.searchDocs.SearchDocsFragment;
 import com.antailbaxt3r.docblock_patientapp.models.Doctor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +37,7 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecentsRVAdapter adapter;
+    private CardView searchButton;
     private ArrayList<Doctor> docList = new ArrayList<>();
     private DatabaseReference docRef = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("recent");
 
@@ -42,8 +46,21 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        searchButton = root.findViewById(R.id.search_button);
         noRecents = root.findViewById(R.id.no_recents);
         recyclerView = root.findViewById(R.id.recents_rv);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction()
+                        .replace(((ViewGroup) getView().getParent()).getId(), new SearchDocsFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+
         docRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -52,6 +69,7 @@ public class HomeFragment extends Fragment {
                     noRecents.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }else{
+                    docList.clear();
                     for (DataSnapshot shot : dataSnapshot.getChildren()){
                         Doctor doc = shot.getValue(Doctor.class);
                         docList.add(doc);
@@ -73,6 +91,8 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+
 
 
 
