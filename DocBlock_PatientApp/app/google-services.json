@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "38258463863",
+    "firebase_url": "https://docblock-1d88a.firebaseio.com",
+    "project_id": "docblock-1d88a",
+    "storage_bucket": "docblock-1d88a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38258463863:android:7a3688d8fee4bd70526272",
+        "android_client_info": {
+          "package_name": "com.antailbaxt3r.docblock_patientapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38258463863-1uqbpdolf9dvtjibrhdrf96ij6lvkrdu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZO9VO-whXl7UViS17BnBYk1fE6RjsSBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38258463863-1uqbpdolf9dvtjibrhdrf96ij6lvkrdu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
