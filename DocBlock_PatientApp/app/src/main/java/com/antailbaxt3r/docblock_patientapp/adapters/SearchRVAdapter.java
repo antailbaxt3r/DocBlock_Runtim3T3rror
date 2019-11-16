@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Filter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,15 +15,17 @@ import com.antailbaxt3r.docblock_patientapp.viewholders.RecentsViewHolder;
 import com.antailbaxt3r.docblock_patientapp.viewholders.SearchViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
-    ArrayList<Doctor> docList;
+    ArrayList<Doctor> docList, docListFiltered;
     Context context;
 
     public SearchRVAdapter(ArrayList<Doctor> docList, Context context) {
         this.docList = docList;
         this.context = context;
+        this.docListFiltered = new ArrayList<>(docList);
     }
 
     @NonNull
@@ -39,7 +42,7 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         if (!docList.get(position).getImageURL().isEmpty()) {
             holder.getImage().setImageURI(Uri.parse(docList.get(position).getImageURL()));
         }else{
-            holder.getImage().setActualImageResource(R.drawable.avatar);
+            holder.getImage().setImageResource(R.drawable.avatar);
         }
     }
 
@@ -47,4 +50,42 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     public int getItemCount() {
         return docList.size();
     }
+
+    public Filter getFilter(){
+        return pokemonFilter;
+    }
+
+    private Filter pokemonFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+            List<Doctor> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0){
+                filteredList.addAll(docList);
+            }else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for(Doctor item : docListFiltered){
+
+                    if(item.getName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            docList.clear();
+            docList = (ArrayList<Doctor>) filterResults.values;
+            notifyDataSetChanged();
+        }
+    };
 }

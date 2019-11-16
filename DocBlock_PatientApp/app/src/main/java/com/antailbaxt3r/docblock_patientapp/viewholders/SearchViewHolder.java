@@ -1,6 +1,7 @@
 package com.antailbaxt3r.docblock_patientapp.viewholders;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 public class SearchViewHolder extends RecyclerView.ViewHolder {
 
 
-    private SimpleDraweeView image;
+    private ImageView image;
     private TextView docName, docDesignation;
     public SearchViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -22,11 +23,11 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
         docDesignation = itemView.findViewById(R.id.doc_desig);
     }
 
-    public SimpleDraweeView getImage() {
+    public ImageView getImage() {
         return image;
     }
 
-    public void setImage(SimpleDraweeView image) {
+    public void setImage(ImageView image) {
         this.image = image;
     }
 

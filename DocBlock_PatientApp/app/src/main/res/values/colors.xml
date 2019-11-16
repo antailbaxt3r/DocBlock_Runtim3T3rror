@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#7548C2</color>
     <color name="colorPrimaryDark">#371D63</color>
-    <color name="colorAccent">#F8D806</color>
+    <color name="colorAccent">#fbc02d</color>
 
     //random colors for usage
     <color name="card_background_color">#FFF</color>

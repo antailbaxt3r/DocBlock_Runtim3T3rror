@@ -25,6 +25,7 @@
                 android:layout_width="100dp"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:id="@+id/image_drawee_view"
                 android:layout_height="100dp"
                 android:src="@drawable/avatar"/>
 
