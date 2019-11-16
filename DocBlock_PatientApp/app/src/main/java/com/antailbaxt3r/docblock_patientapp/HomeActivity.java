@@ -50,25 +50,25 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                switch(menuItem.getItemId()){
-
-                    case R.id.nav_settings:
-                        Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
-                        startActivity(profileIntent);
-                        break;
-                    case R.id.nav_about_us:
-//                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
-//                        startActivity(aboutIntent);
-                        break;
-
-                }
-                return false;
-            }
-        });
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//
+//                switch(menuItem.getItemId()){
+//
+//                    case R.id.nav_settings:
+//                        Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+//                        startActivity(profileIntent);
+//                        break;
+//                    case R.id.nav_about_us:
+////                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
+////                        startActivity(aboutIntent);
+//                        break;
+//
+//                }
+//                return false;
+//            }
+//        });
     }
 
     @Override

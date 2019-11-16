@@ -1,6 +1,7 @@
 package com.antailbaxt3r.docblock_patientapp.drawerFragments.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment {
 
                     adapter = new RecentsRVAdapter(docList, getContext());
                     recyclerView.setAdapter(adapter);
+                    Log.i("AdapterSet", "AdapterSet");
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
 
