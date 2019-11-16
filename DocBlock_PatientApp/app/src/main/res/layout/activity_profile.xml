@@ -54,9 +54,9 @@
     </LinearLayout>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:id="@+id/search_button"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:id="@+id/change_image"
         android:layout_margin="10dp"
         app:cardCornerRadius="15dp">
 
@@ -73,7 +73,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="Change Password"
+                android:text="Change Image"
                 android:textAlignment="center"
                 android:textColor="@color/white"/>
         </LinearLayout>

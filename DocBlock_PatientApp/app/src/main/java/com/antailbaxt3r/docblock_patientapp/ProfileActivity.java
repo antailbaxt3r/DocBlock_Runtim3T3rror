@@ -3,12 +3,14 @@ package com.antailbaxt3r.docblock_patientapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.antailbaxt3r.docblock_patientapp.models.Prescription;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView name, number, email;
     private SimpleDraweeView image;
+    private CardView changeImage;
     private static int PICK_IMAGE_REQUEST = 777;
     private Uri imageUri;
 
@@ -47,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String UID = user.getUid();
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
 
@@ -55,6 +59,61 @@ public class ProfileActivity extends AppCompatActivity {
         number = findViewById(R.id.profile_number);
         email = findViewById(R.id.profile_email);
         image = findViewById(R.id.profile_image);
+        changeImage = findViewById(R.id.change_image);
+
+
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                name.setText(dataSnapshot.child("username").getValue().toString());
+                number.setText(dataSnapshot.child("contactNumber").getValue().toString());
+                email.setText(user.getEmail().toString());
+
+                if (dataSnapshot.child("imageURL").exists()){
+                    image.setImageURI(Uri.parse(dataSnapshot.child("imageURL").toString()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final Dialog changeImageDialog = new Dialog(ProfileActivity.this);
+                changeImageDialog.setContentView(R.layout.dialog_box);
+                changeImageDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                TextView heading =  changeImageDialog.findViewById(R.id.dialog_box_heading);
+                heading.setText("Change Profile Image?");
+                TextView body = changeImageDialog.findViewById(R.id.dialog_box_body);
+                body.setText("Click on OK to select a new image");
+                Button positiveButton = changeImageDialog.findViewById(R.id.dialog_box_positive_button);
+                positiveButton.setText("OK");
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openFileChooser();
+                        changeImageDialog.dismiss();
+                    }
+                });
+                Button negativeButton = changeImageDialog.findViewById(R.id.dialog_box_negative_button);
+                negativeButton.setText("Cancel");
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeImageDialog.dismiss();
+                    }
+                });
+
+                changeImageDialog.show();
+
+            }
+        });
+
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +173,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             imageUri = data.getData();
             image.setImageURI(imageUri);
+            uploadImage();
         }
     }
 
@@ -131,7 +191,10 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(ProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                        userReference.child("imageURL").setValue(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
                     }
                 });
+
+
     }
 }
