@@ -148,6 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userReference.child("allDoctors").child(user.getUid()).child("contactNumber").setValue(contactText);
                             userReference.child("allDoctors").child(user.getUid()).child("UID").setValue(user.getUid());
                             userReference.child("allDoctors").child(user.getUid()).child("designation").setValue(dobText);
+                            userReference.child("allDoctors").child(user.getUid()).child("imageURL").setValue("");
 
                             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
