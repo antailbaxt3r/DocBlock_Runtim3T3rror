@@ -35,6 +35,7 @@ public class RespondToQuery extends AppCompatActivity {
     private static int PICK_IMAGE_REQUEST = 777;
     Uri imageUri;
     String patientUID;
+    LinearLayout progressBar;
 
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("allDoctors").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("prescriptions");
     private DatabaseReference patientRef;
@@ -47,6 +48,7 @@ public class RespondToQuery extends AppCompatActivity {
         uploadButton = findViewById(R.id.upload_btn);
         sendButton = findViewById(R.id.send_btn);
         image = findViewById(R.id.pres_image);
+        progressBar = findViewById(R.id.progress_bar);
 
         patientUID = getIntent().getStringExtra("uid");
 
@@ -62,6 +64,7 @@ public class RespondToQuery extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 uploadImage();
             }
         });
@@ -121,6 +124,11 @@ public class RespondToQuery extends AppCompatActivity {
                         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
                         String formattedDate = df.format(c);
                         patientRef.child(id).child("date").setValue(formattedDate);
+                        progressBar.setVisibility(View.GONE);
+
+                        Intent intent = new Intent(RespondToQuery.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
 

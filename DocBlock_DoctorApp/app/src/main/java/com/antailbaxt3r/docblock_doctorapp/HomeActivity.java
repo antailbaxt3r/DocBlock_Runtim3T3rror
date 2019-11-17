@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_home)
+                R.id.nav_home)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -54,22 +54,21 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 switch(menuItem.getItemId()){
-
                     case R.id.nav_home:
-                        HomeFragment home = new HomeFragment();
-                        loadFragment(home);
+                        loadFragment(new HomeFragment());
                         break;
                     case R.id.nav_your_docs:
-                        Intent verify = new Intent(HomeActivity.this, VerificationActivity.class);
-                        startActivity(verify);
+                        Intent intent = new Intent(HomeActivity.this, VerificationActivity.class);
+                        startActivity(intent);
                         break;
+
                     case R.id.nav_settings:
                         Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
                         startActivity(profileIntent);
                         break;
                     case R.id.nav_about_us:
-//                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
-//                        startActivity(aboutIntent);
+                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
+                        startActivity(aboutIntent);
                         break;
 
                 }
