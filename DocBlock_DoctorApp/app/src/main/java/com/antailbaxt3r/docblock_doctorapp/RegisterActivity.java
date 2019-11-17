@@ -138,9 +138,9 @@ public class RegisterActivity extends AppCompatActivity {
                             System.out.println("UID is: " + user.getUid());
                             try {
                                 KeyPair pair = RSA.generateKeyPair();
-                                userReference.child("Users").child(user.getUid()).child("publicKey").setValue(pair.getPublic().toString());
+                                userReference.child("allDoctors").child(user.getUid()).child("publicKey").setValue(pair.getPublic().toString());
                                 System.out.println(pair.getPublic().toString());
-                                userReference.child("Users").child(user.getUid()).child("privateKey").setValue(pair.getPrivate().toString());
+                                userReference.child("allDoctors").child(user.getUid()).child("privateKey").setValue(pair.getPrivate().toString());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -153,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     String privatek = dataSnapshot.child("allDoctors").child(user.getUid()).child("privateKey").getValue().toString();
-                                    privatek = privatek.replace("OpenSSLRSAPublicKey{modulus=", "");
+                                    privatek = privatek.replace("OpenSSLRSAPrivateCrtKey{modulus=", "");
                                     privatek = privatek.replace(",publicExponent=10001}","");
                                     String publick = dataSnapshot.child("allDoctors").child(user.getUid()).child("publicKey").getValue().toString();
                                     publick = publick.replace("OpenSSLRSAPublicKey{modulus=", "");

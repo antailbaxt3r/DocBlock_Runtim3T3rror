@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".RespondToQuery">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Send Response"
+        app:titleTextColor="@color/white"
+        android:background="@color/colorPrimary"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_corner"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/pres_image"
+            android:scaleType="fitXY"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:background="@drawable/yellow_button"
+            android:layout_height="wrap_content"
+            android:id="@+id/upload_btn"
+            android:layout_margin="10dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UPLOAD PRESCRIPTION"
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:background="@drawable/yellow_button"
+            android:layout_height="wrap_content"
+            android:id="@+id/send_btn"
+            android:layout_margin="10dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SEND PRESCRIPTION"
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
