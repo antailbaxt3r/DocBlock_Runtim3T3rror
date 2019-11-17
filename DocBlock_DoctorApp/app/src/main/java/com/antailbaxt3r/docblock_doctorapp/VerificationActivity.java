@@ -58,7 +58,11 @@ public class VerificationActivity extends AppCompatActivity {
                 String name = null;
                 try {
                     name = getJSON(regNumber);
-                    list.add(0, name);
+                    if (name == null){
+                        list.add(0, "");
+                    }else{
+                        list.add(0,name);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
