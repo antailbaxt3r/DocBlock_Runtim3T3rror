@@ -180,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     String privatek = dataSnapshot.child("Users").child(user.getUid()).child("privateKey").getValue().toString();
-                                    privatek = privatek.replace("OpenSSLRSAPublicKey{modulus=", "");
+                                    privatek = privatek.replace("OpenSSLRSAPrivateCrtKey{modulus=", "");
                                     privatek = privatek.replace(",publicExponent=10001}","");
                                     String publick = dataSnapshot.child("Users").child(user.getUid()).child("publicKey").getValue().toString();
                                     publick = publick.replace("OpenSSLRSAPublicKey{modulus=", "");

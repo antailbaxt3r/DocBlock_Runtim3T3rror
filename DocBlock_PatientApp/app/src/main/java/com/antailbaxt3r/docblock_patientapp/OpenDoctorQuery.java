@@ -1,10 +1,17 @@
 package com.antailbaxt3r.docblock_patientapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,8 +31,8 @@ import org.w3c.dom.Text;
 public class OpenDoctorQuery extends AppCompatActivity {
 
     EditText problem, duration;
-    LinearLayout send;
-    String UID;
+    LinearLayout send, call;
+    String UID, telephoneText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,7 @@ public class OpenDoctorQuery extends AppCompatActivity {
         duration = findViewById(R.id.duration_et);
         send = findViewById(R.id.send_btn);
         UID = getIntent().getStringExtra("uid");
+        call = findViewById(R.id.call_doctor);
 
         final DatabaseReference docRef = FirebaseDatabase.getInstance().getReference().child("allDoctors").child(UID);
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -43,17 +51,46 @@ public class OpenDoctorQuery extends AppCompatActivity {
         docRef.child("queries").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     TextView ptv = findViewById(R.id.problem_tv);
                     TextView dtv = findViewById(R.id.duration_tv);
 
                     ptv.setText(dataSnapshot.child("problem").getValue().toString());
                     ptv.setText(dataSnapshot.child("duration").getValue().toString());
+
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                docRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        telephoneText = dataSnapshot.child("contactNumber").getValue().toString();
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:"+telephoneText));
+                        if (checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
+                        startActivity(callIntent);
+                        Log.e("CALLING", "SUCCESS");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
 
             }
         });

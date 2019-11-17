@@ -2,6 +2,7 @@ package com.antailbaxt3r.docblock_patientapp.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -38,6 +39,7 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
         holder.getDocName().setText(docList.get(position).getUsername());
         holder.getDocDesignation().setText(docList.get(position).getDesignation());
+        Log.i("COUNT ", docList.get(position).getUID());
         if (!docList.get(position).getImageURL().isEmpty()) {
             holder.getImage().setImageURI(Uri.parse(docList.get(position).getImageURL()));
         }else{
