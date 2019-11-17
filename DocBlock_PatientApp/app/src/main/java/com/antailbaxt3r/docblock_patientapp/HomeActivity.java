@@ -3,6 +3,9 @@ package com.antailbaxt3r.docblock_patientapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.antailbaxt3r.docblock_patientapp.drawerFragments.home.HomeFragment;
+import com.antailbaxt3r.docblock_patientapp.drawerFragments.prevPres.PrevPresFragment;
+import com.antailbaxt3r.docblock_patientapp.drawerFragments.searchDocs.SearchDocsFragment;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -12,6 +15,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -43,22 +49,22 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Fresco.initialize(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home,
-                //R.id.nav_your_docs,
-                R.id.Nav_search_docs,
-                R.id.nav_prev_prescips)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+//        mAppBarConfiguration = new AppBarConfiguration.Builder(
+//                R.id.nav_home,
+//                //R.id.nav_your_docs,
+//                R.id.Nav_search_docs,
+//                R.id.nav_prev_prescips)
+//                .setDrawerLayout(drawer)
+//                .build();
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+//        NavigationUI.setupWithNavController(navigationView, navController);
 
 
 
@@ -104,27 +110,41 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection deprecation
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch(menuItem.getItemId()){
+
+                    case R.id.nav_home:
+                        toolbar.setTitle("Home");
+                        loadFragment(new HomeFragment());
+                        break;
+
+                    case R.id.nav_prev_prescips:
+                        toolbar.setTitle("Your Prescriptions");
+                        loadFragment(new PrevPresFragment());
+                        break;
+                    case R.id.Nav_search_docs:
+                        toolbar.setTitle("Search for a Doctor");
+                        loadFragment(new SearchDocsFragment());
+                        break;
+                    case R.id.nav_settings:
+                        Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+                        startActivity(profileIntent);
+                        break;
+                    case R.id.nav_about_us:
+                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
+                        startActivity(aboutIntent);
+                        break;
+
+                }
+                return false;
+            }
+        });
     }
 
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//
-//                switch(menuItem.getItemId()){
-//
-//                    case R.id.nav_settings:
-//                        Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
-//                        startActivity(profileIntent);
-//                        break;
-//                    case R.id.nav_about_us:
-////                        Intent aboutIntent = new Intent(HomeActivity.this, AboutUsActivity.class);
-////                        startActivity(aboutIntent);
-//                        break;
-//
-//                }
-//                return false;
-//            }
-//        });
 
 
 
@@ -156,5 +176,14 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
     }
 }

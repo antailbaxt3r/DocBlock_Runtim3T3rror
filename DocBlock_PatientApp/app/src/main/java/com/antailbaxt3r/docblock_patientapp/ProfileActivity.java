@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     private CardView changeImage;
     private static int PICK_IMAGE_REQUEST = 777;
     private Uri imageUri;
+    private LinearLayout progressBar;
 
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
     private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -60,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         email = findViewById(R.id.profile_email);
         image = findViewById(R.id.profile_image);
         changeImage = findViewById(R.id.change_image);
+        progressBar = findViewById(R.id.progress_bar);
 
 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -174,12 +177,13 @@ public class ProfileActivity extends AppCompatActivity {
             imageUri = data.getData();
             image.setImageURI(imageUri);
             uploadImage();
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 
     private void uploadImage() {
 
-        StorageReference fileReference = storageReference.child("profile." + getFileExtention(imageUri));
+        final StorageReference fileReference = storageReference.child("profile." + getFileExtention(imageUri));
         fileReference.putFile(imageUri)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -191,7 +195,16 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(ProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-                        userReference.child("imageURL").setValue(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+
+                        fileReference.getDownloadUrl()
+                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        userReference.child("imageURL").setValue(uri.toString());
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+
                     }
                 });
 
