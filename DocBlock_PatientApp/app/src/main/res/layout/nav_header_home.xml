@@ -26,7 +26,8 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:textColor="@color/white"
         android:id="@+id/name_drawer"
-        android:text="@string/nav_header_title"
+        android:text="Hi!"
+        android:textSize="24sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 

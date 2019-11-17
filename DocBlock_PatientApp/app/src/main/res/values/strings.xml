@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DocBlock_PatientApp</string>
+    <string name="app_name">DocBlock</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in">Log In</string>

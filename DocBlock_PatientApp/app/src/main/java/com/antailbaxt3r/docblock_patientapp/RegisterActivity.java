@@ -167,6 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userReference.child("Users").child(user.getUid()).child("contactNumber").setValue(contactText);
                             userReference.child("Users").child(user.getUid()).child("UID").setValue(user.getUid());
                             userReference.child("Users").child(user.getUid()).child("dob").setValue(dobText);
+                            userReference.child("Users").child(user.getUid()).child("imageURL").setValue("");
                             try {
                                 KeyPair pair = RSA.generateKeyPair();
                                 userReference.child("Users").child(user.getUid()).child("publicKey").setValue(pair.getPublic().toString());
