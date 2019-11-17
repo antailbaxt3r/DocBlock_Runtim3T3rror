@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.antailbaxt3r.docblock_doctorapp.R;
 import com.antailbaxt3r.docblock_doctorapp.models.Doctor;
 import com.antailbaxt3r.docblock_doctorapp.viewholders.SearchViewHolder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         holder.getDocName().setText(docList.get(position).getName());
         holder.getDocDesignation().setText(docList.get(position).getDesignation());
         if (!docList.get(position).getImageURL().isEmpty()) {
-            holder.getImage().setImageURI(Uri.parse(docList.get(position).getImageURL()));
+            Picasso.get().load(docList.get(position).getImageURL()).into(holder.getImage());
         }else{
             holder.getImage().setImageResource(R.drawable.avatar);
         }

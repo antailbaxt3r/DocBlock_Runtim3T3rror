@@ -8,6 +8,7 @@ import android.util.JsonReader;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +34,17 @@ public class VerificationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String regNumber = reg.getText().toString();
-
+                if (regNumber.equals("AB72XY")){
+                    Toast.makeText(VerificationActivity.this, "Congratulation! You have been verified.", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference().child("allDoctors").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("verified").setValue(true);
+                    finish();
+                }else{
+                    Toast.makeText(VerificationActivity.this, "Your registration number does not match our records.", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase.getInstance().getReference().child("allDoctors").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("verified").setValue(false);
+                    finish();
+                }
             }
         });
 

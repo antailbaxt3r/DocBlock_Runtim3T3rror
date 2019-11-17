@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_your_docs"
             android:icon="@drawable/ic_stethoscope"
-            android:title="@string/your_patients" />
+            android:title="Verify Yourself" />
 
     </group>
 

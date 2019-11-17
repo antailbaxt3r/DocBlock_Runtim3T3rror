@@ -3,11 +3,14 @@ package com.antailbaxt3r.docblock_doctorapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.antailbaxt3r.docblock_doctorapp.drawerFragments.home.HomeFragment;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -39,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_your_docs)
+                R.id.nav_home, R.id.nav_home)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -52,6 +55,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch(menuItem.getItemId()){
 
+                    case R.id.nav_home:
+                        HomeFragment home = new HomeFragment();
+                        loadFragment(home);
+                        break;
+                    case R.id.nav_your_docs:
+                        Intent verify = new Intent(HomeActivity.this, VerificationActivity.class);
+                        startActivity(verify);
+                        break;
                     case R.id.nav_settings:
                         Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
                         startActivity(profileIntent);
@@ -95,5 +106,13 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

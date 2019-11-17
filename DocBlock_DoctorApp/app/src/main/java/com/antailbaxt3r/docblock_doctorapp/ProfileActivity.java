@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -39,9 +42,11 @@ public class ProfileActivity extends AppCompatActivity {
     private CardView changeImage;
     private static int PICK_IMAGE_REQUEST = 777;
     private Uri imageUri;
+    private LinearLayout progressBar;
 
-    private StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-    private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("allDoctors").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    private DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("allDoctors").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String UID = user.getUid();
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("allDoctors").child(UID);
 
         name = findViewById(R.id.profile_name);
         number = findViewById(R.id.profile_number);
         email = findViewById(R.id.profile_email);
         image = findViewById(R.id.profile_image);
         changeImage = findViewById(R.id.change_image);
+        progressBar = findViewById(R.id.progress_bar);
+
 
 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -67,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
                 email.setText(user.getEmail().toString());
 
                 if (dataSnapshot.child("imageURL").exists()){
-                    image.setImageURI(Uri.parse(dataSnapshot.child("imageURL").toString()));
+                    Picasso.get().load(dataSnapshot.child("imageURL").toString()).into(image);
                 }
             }
 
@@ -170,13 +177,14 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             imageUri = data.getData();
             image.setImageURI(imageUri);
+            progressBar.setVisibility(View.VISIBLE);
             uploadImage();
         }
     }
 
     private void uploadImage() {
 
-        StorageReference fileReference = storageReference.child("profile." + getFileExtention(imageUri));
+        final StorageReference fileReference = storageReference.child("profile." + getFileExtention(imageUri));
         fileReference.putFile(imageUri)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -188,7 +196,16 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(ProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-                        userReference.child("imageURL").setValue(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+
+                        fileReference.getDownloadUrl()
+                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        userReference.child("imageURL").setValue(uri.toString());
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+
                     }
                 });
 
